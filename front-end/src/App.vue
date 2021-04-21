@@ -5,7 +5,7 @@
       <router-link to="/favorites">
         <div class="menu-item">
           <img src="/images/heart.png">
-          <p>{{numberOfItems}} favorites</p>
+          <p>Submissions</p>
         </div>
       </router-link>
     </div>
@@ -15,7 +15,7 @@
       </router-link>
     </div>
     <div id="right_side">
-      <router-link to="/admin">
+      <router-link to="/adminview">
         <div class="menu-item">
           <img src="/images/gear.png">
           <p>Admin</p>
@@ -25,16 +25,17 @@
   </div>
   <router-view />
   <div class="footer">
-    <a href="https://github.com/awoodbur/creative3.git">Github Repository</a>
+    <a href="https://github.com/awoodbur/creative4.git">Github Repository</a>
   </div>
 </div>
 </template>
 
 <script>
+
 export default {
   computed: {
     numberOfItems() {
-      return this.$root.$data.favorites.length;
+      return 0;
     }
   }
 }

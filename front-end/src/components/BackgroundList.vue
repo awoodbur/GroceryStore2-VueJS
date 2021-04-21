@@ -3,32 +3,36 @@
   <div class="backgrounds">
     <div class="background" v-for="background in backgrounds" :key="background.id">
       <div class="info">
-        <h1>{{background.name}}</h1>
+        <h1>{{background.title}}</h1>
       </div>
       <div class="image">
-        <img :src="'/images/backgrounds/'+background.image">
+        <img :src="background.path">
       </div>
       <p>Tags: {{background.tags}}</p>
-
-      <div class="options">
-        <button v-on:click="addItem(background)">Add to Favorites</button>
-      </div>
+      <p class="photoName">By: {{background.user.firstName}} {{background.user.lastName}}</p>
+      <p class="photoDate">Submitted: {{formatDate(background.created)}}</p>
     </div>
   </div>
 </div>
 </template>
 
 <script>
+import moment from 'moment';
+
 export default {
   name: 'BackgroundList',
   props: {
     backgrounds: Array
   },
   methods: {
-    addItem(background) {
-      this.$root.$data.favorites.push(background);
+    formatDate(date) {
+      if (moment(date).diff(Date.now(), 'days') < 15)
+        return moment(date).fromNow();
+      else
+        return moment(date).format('d MMMM YYYY');
     }
   }
+
 }
 </script>
 

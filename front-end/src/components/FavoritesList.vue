@@ -1,38 +1,45 @@
 <template>
 <div class="wrapper">
   <div class="backgrounds">
-    <div class="background" v-for="background in backgrounds" :key="background.id">
-      <div class="info">
-        <h1>{{background.name}}</h1>
+    <div v-if="backgrounds.length > 0">
+      <div class="background" v-for="background in backgrounds" :key="background.id">
+        <div class="info">
+          <h1>{{background.title}}</h1>
+        </div>
+        <div class="image">
+          <img :src="background.path">
+        </div>
+        <div class="options">
+          <button v-on:click="removeItem(background)">Delete Submission</button>
+        </div>
       </div>
-      <div class="image">
-        <img :src="'/images/backgrounds/'+background.image">
-      </div>
-      <p>Tags: {{background.tags}}</p>
-
-      <div class="options">
-        <button v-on:click="replaceTags(background)">Replace tags</button>
-      </div>
+    </div>
+    <div v-else>
+      <p>You have no submissions.</p>
     </div>
   </div>
 </div>
 </template>
 
 <script>
-
+import axios from 'axios';
 export default {
-  name: 'EditList',
+  name: 'FavoritesList',
   props: {
-    backgrounds: Array,
-    newtag: String
+    backgrounds: Array
   },
   methods: {
-    replaceTags(background) {
-      console.log(this.thing);
-      background.tags = this.newtag;
-    }
+    async removeItem(background) {
+      try {
+        await axios.delete(`/api/photos/${background._id}`);
+        this.$emit('deleteFinished');
+      } catch (error) {
+        console.log(error);
+      }
+    },
   }
 }
+
 </script>
 
 <style scoped>

@@ -1,17 +1,14 @@
 <template>
 <div>
   <div class="wrapper">
-    <div class="search">
-      <form class="pure-form">
-        <input v-model="searchText" placeholder="Search wallpapers by tag"/>
-      </form>
-    </div>
+    <h1>Backgrounds</h1>
   </div>
   <BackgroundList :backgrounds="backgrounds" />
 </div>
 </template>
 
 <script>
+import axios from 'axios';
 import BackgroundList from "../components/BackgroundList.vue"
 export default {
   name: 'Home',
@@ -21,13 +18,23 @@ export default {
   data() {
     return {
       searchText: '',
+      backgrounds: []
     }
   },
-  computed: {
-    backgrounds() {
-      return this.$root.$data.backgrounds.filter(background => background.tags.toLowerCase().search(this.searchText.toLowerCase()) >= 0);
-    }
+  created() {
+      this.getPhotos();
   },
+  methods: {
+    async getPhotos() {
+      try {
+        let response = await axios.get("/api/photos/all");
+        this.backgrounds = response.data;
+      } catch (error) {
+        this.error = error.response.data.message;
+      }
+    },
+  }
+
 }
 </script>
 

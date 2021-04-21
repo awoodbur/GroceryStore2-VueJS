@@ -1,36 +1,42 @@
 <template>
 <div class="wrapper">
   <div class="backgrounds">
-    <div v-if="backgrounds.length > 0">
-      <div class="background" v-for="background in backgrounds" :key="background.id">
-        <div class="info">
-          <h1>{{background.name}}</h1>
-        </div>
-        <div class="image">
-          <img :src="'/images/backgrounds/'+background.image">
-        </div>
-        <div class="options">
-          <button v-on:click="removeItem(background)">Remove from Favorites</button>
-        </div>
+    <div class="background" v-for="background in backgrounds" :key="background.id">
+      <div class="info">
+        <h1>{{background.title}}</h1>
       </div>
-    </div>
-    <div v-else>
-      <p>You have no favorites.</p>
+      <div class="image">
+        <img :src="background.path">
+      </div>
+      <p>Tags: {{background.tags}}</p>
+
+      <div class="options">
+        <button v-on:click="replaceTags(background)">Replace tags</button>
+      </div>
     </div>
   </div>
 </div>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
-  name: 'FavoritesList',
+  name: 'EditList',
   props: {
-    backgrounds: Array
+    backgrounds: Array,
+    newtag: String
   },
   methods: {
-    removeItem(background) {
-      this.$root.$data.favorites.splice(this.$root.$data.favorites.indexOf(background),1);
-    }
+    async replaceTags(background) {
+      try{
+        await axios.put(`/api/photos/${background._id}`, {
+          tags: this.newtag,
+        });
+        this.$emit('replaceFinished');
+      } catch(error) {
+        console.log(error);
+      }
+    },
   }
 }
 </script>
