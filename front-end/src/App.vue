@@ -25,7 +25,7 @@
   </div>
   <router-view />
   <div class="footer">
-    <a href="https://github.com/awoodbur/creative4.git">Github Repository</a>
+    <a href="https://github.com/awoodbur/creative4.git">Github Repository, Hours Spent: 5</a>
   </div>
 </div>
 </template>
@@ -111,7 +111,7 @@ body {
   margin: 0px -50px -25px -50px;
   flex-shrink: 0;
   padding: 20px 20px;
-  justify-content: center;
+  justify-content: space-around;
   background-color: #23395B;
   display: flex
 }

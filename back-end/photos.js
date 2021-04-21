@@ -33,10 +33,8 @@ const photoSchema = new mongoose.Schema({
 });
 
 const Photo = mongoose.model('Photo', photoSchema);
-//validUser
-// upload photo
+
 router.post("/", validUser, upload.single('photo'), async (req, res) => {
-  // check parameters
   try {
 
     if (!req.file)
@@ -84,20 +82,13 @@ router.get("/all", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
-  try {
-    let photos = await Photo.findOne({
-      _id: req.params.id
-    });
-    return res.send(photos);
-  } catch (error) {
-    return res.sendStatus(500);
-  }
-});
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', validUser, async (req, res) => {
     try {
-        let photo = await Photo.findOne({_id:req.params.id});
+        let photo = await Photo.findOne(
+          {_id:req.params.id,
+          user: req.user
+});
         if (!photo) {
             res.sendStatus(404);
             return;
@@ -109,11 +100,12 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', validUser, async (req, res) => {
 
   try {
     let photo = await Photo.findOne({
-      _id: req.params.id
+      _id: req.params.id,
+      user: req.user
     });
     photo.tags = req.body.tags;
     await photo.save();
